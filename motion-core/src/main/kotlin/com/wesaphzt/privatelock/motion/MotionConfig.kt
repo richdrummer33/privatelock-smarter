@@ -26,6 +26,14 @@ data class MotionConfig(
     val gravityFilterTauSeconds: Float = 0.5f,
     /** Hard cap on retained samples, protects memory if a sensor floods us. */
     val maxWindowSamples: Int = 1_024,
+    /**
+     * A gap larger than this means delivery stalled (Doze, sensor batching,
+     * the service being restarted). Samples either side of such a gap must not
+     * be treated as a continuous signal, so the window is discarded.
+     */
+    val maxSampleGapMillis: Long = 1_000,
+    /** Minimum interval between autocorrelation recomputations, ms. */
+    val periodicityIntervalMillis: Long = 200,
 
     // -- stationary / stillness --------------------------------------------
     /** Linear-acceleration RMS below which the device looks surface-still. */
@@ -62,6 +70,16 @@ data class MotionConfig(
     val vehicleRmsMax: Float = 1.2f,
     val vehicleGyroMeanMax: Float = 0.08f,
     val vehicleOrientationDeltaMaxDeg: Float = 8f,
+    /**
+     * Minimum translation/rotation coupling ratio for a vehicle-like signal.
+     * A rigidly mounted device shakes without turning; a hand-held one cannot.
+     */
+    val vehicleTranslationRotationRatioMin: Float = 14f,
+    /**
+     * Above this ratio the signal is too rigidly coupled to be a hand, so the
+     * handheld score is damped.
+     */
+    val handheldTranslationRotationRatioMax: Float = 12f,
     /** How long the vehicle-like pattern must persist before we believe it. */
     val vehicleMinDurationMillis: Long = 12_000,
 
