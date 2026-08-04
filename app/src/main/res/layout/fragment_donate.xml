@@ -39,7 +39,7 @@
                     android:layout_marginEnd="@dimen/activity_margin"
                     android:text="@string/donate_note_text"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textSize="@dimen/_12sdp"/>
+                    android:textSize="@dimen/text_body"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

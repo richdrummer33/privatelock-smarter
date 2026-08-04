@@ -30,6 +30,9 @@
     <string name="slider_page_three_desc">Should something happen, your phone will be quickly locked, dependent on the sensitivity you\'ve set.
         \n\nDon\'t forget to disable battery optimization!</string>
 
+    <string name="intro_next">Next</string>
+    <string name="intro_done">Done</string>
+
     <!--actionbar-->
     <string name="action_start">Start</string>
     <string name="action_stop">Stop</string>

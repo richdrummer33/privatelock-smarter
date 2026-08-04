@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/main_lock_sensitivity_title"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/text_body"
                     android:textStyle="bold"/>
 
                 <RelativeLayout
@@ -45,7 +45,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:text="@string/main_lock_sensitivity_title_high"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/text_body"
                         android:textStyle="italic"/>
 
                     <TextView
@@ -54,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:text="@string/main_lock_sensitivity_title_arrow"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/text_body" />
 
                     <TextView
                         android:id="@+id/tvSensitivityLow"
@@ -63,7 +63,7 @@
                         android:layout_alignParentEnd="true"
                         android:gravity="end"
                         android:text="@string/main_lock_sensitivity_title_low"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/text_body"
                         android:textStyle="italic"
                         tools:ignore="RelativeOverlap" />
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:text="@string/main_seek_low"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/text_body" />
 
             <SeekBar
                 android:id="@+id/sbSensitivity"
@@ -102,7 +102,7 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="end"
                 android:text="@string/main_seek_high"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/text_body"
                 tools:ignore="RelativeOverlap" />
 
         </RelativeLayout>
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_margin"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/text_body"
             android:textStyle="italic|bold"
             android:text=""
             android:gravity="center" />
@@ -135,7 +135,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/main_test_lock_sensitivity_title"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/text_body"
                     android:textStyle="bold"/>
 
             </LinearLayout>
@@ -159,7 +159,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stats_last_breach_value_title"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/tvAvgBreachValueTitle"
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvLastBreachValueTitle"
                 android:text="@string/stats_avg_breach_value_title"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/tvHighestBreachValueTitle"
@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvAvgBreachValueTitle"
                 android:text="@string/stats_highest_breach_value_title"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
         </RelativeLayout>
 
@@ -193,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/stats_zero"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/tvAvgBreachValue"
@@ -201,7 +201,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvLastBreachValue"
                 android:text="@string/stats_zero"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/tvHighestBreachValue"
@@ -209,7 +209,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvAvgBreachValue"
                 android:text="@string/stats_zero"
-                android:textSize="@dimen/_10sdp" />
+                android:textSize="@dimen/text_small" />
 
         </RelativeLayout>
     </RelativeLayout>

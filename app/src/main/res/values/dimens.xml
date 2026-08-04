@@ -18,4 +18,18 @@
     <dimen name="card_thumbnail_size">46dp</dimen>
 
     <dimen name="author_image_size">64dp</dimen>
+
+    <!--
+      Replacements for the four values previously pulled in from the
+      com.intuit.sdp:sdp-android library. Only these four were ever referenced,
+      so vendoring them removes a whole third-party dependency. Text sizes use
+      sp, layout sizes use dp.
+    -->
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_25sdp">25dp</dimen>
+    <dimen name="_30sdp">30dp</dimen>
+
+    <!-- Text sizes use sp so they still honour the user's font-size setting. -->
+    <dimen name="text_small">10sp</dimen>
+    <dimen name="text_body">12sp</dimen>
 </resources>

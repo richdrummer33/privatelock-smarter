@@ -1,64 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.wesaphzt.privatelock">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Private Lock deliberately holds NO network permission.
+
+      android.permission.INTERNET is absent, and its absence is enforced at
+      build time by the verifyNoInternetPermission* task in app/build.gradle.kts,
+      which inspects the *merged* manifest so a library cannot slip one in.
+      The app therefore cannot phone home even if it wanted to.
+    -->
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--pre-oreo-->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!--
+      Requested only when the user turns on the optional Google Activity
+      Recognition classifier. On GrapheneOS this maps to the "Physical activity"
+      permission and can be denied without breaking the app.
+    -->
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.gyroscope"
+        android:required="false" />
 
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="com.wesaphzt.privatelock.IntroActivity"
+        <activity
+            android:name=".IntroActivity"
+            android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <receiver android:name=".receivers.DeviceAdminReceiver"
-             android:permission="android.permission.BIND_DEVICE_ADMIN">
-            <meta-data android:name="android.app.device_admin"
+        <!--
+          Device Admin is retained only as an optional fallback lock method.
+          It forces credential entry on next unlock on most builds, which is
+          exactly why the Accessibility method is preferred; see LockController.
+        -->
+        <receiver
+            android:name=".receivers.DeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
                 android:resource="@xml/device_admin" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.wesaphzt.privatelock.receivers.NotificationReceiver"/>
-        <receiver android:name="com.wesaphzt.privatelock.receivers.PauseReceiver"/>
+        <receiver
+            android:name=".receivers.NotificationReceiver"
+            android:exported="false" />
 
-        <receiver android:name=".receivers.BootReceiver">
+        <receiver
+            android:name=".receivers.PauseReceiver"
+            android:exported="false" />
+
+        <receiver
+            android:name=".receivers.BootReceiver"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
+        <!--
+          The original declaration was android:permission="BIND_JOB_SERVICE" on
+          a JobIntentService that was actually started with startService /
+          startForegroundService. That combination is meaningless: the
+          permission gates JobScheduler binding, which never happened. It is
+          now a plain foreground service with a declared type.
+        -->
         <service
             android:name=".service.LockService"
-            android:label="Service"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Detects that an unattended unlocked device has been picked up and locks it" />
+        </service>
 
-        <receiver android:name=".widget.LockWidgetProvider" >
+        <receiver
+            android:name=".widget.LockWidgetProvider"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
+            <meta-data
+                android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_info" />
         </receiver>
 
