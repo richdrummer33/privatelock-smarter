@@ -119,11 +119,17 @@ data class MotionConfig(
     /** Minimum gravity-vector angle change over the gesture, degrees. */
     val minOrientationDeltaDeg: Float = 12f,
     /** Orientation change at which the orientation evidence score saturates. */
-    val fullOrientationDeltaDeg: Float = 45f,
-    /** Minimum integrated |omega| dt over the gesture, radians. */
-    val minAngularTravelRad: Float = 0.5f,
+    val fullOrientationDeltaDeg: Float = 35f,
+    /**
+     * Minimum integrated |omega| dt over the gesture, radians.
+     *
+     * Kept numerically consistent with [minOrientationDeltaDeg]: 12 degrees is
+     * 0.21 rad, so demanding much more integrated rotation than that would
+     * reject gestures the orientation gate accepts, for no physical reason.
+     */
+    val minAngularTravelRad: Float = 0.25f,
     /** Integrated rotation at which the angular evidence score saturates. */
-    val fullAngularTravelRad: Float = 1.6f,
+    val fullAngularTravelRad: Float = 1.0f,
     /** Linear-acceleration RMS the device must sustain to count as held. */
     val heldSustainRmsMin: Float = 0.09f,
     /** Mean gyro the device must sustain to count as held, rad/s. */
@@ -132,11 +138,18 @@ data class MotionConfig(
     val pickupConfidenceThreshold: Float = 0.62f,
 
     // -- evidence weights (need not sum to 1; they are normalised) ----------
-    val weightPriorStillness: Float = 0.15f,
-    val weightOnsetImpulse: Float = 0.20f,
-    val weightOrientation: Float = 0.25f,
-    val weightAngularTravel: Float = 0.20f,
-    val weightSustainedMotion: Float = 0.20f,
+    //
+    // Onset strength is deliberately the *lowest* weighted evidence. It is the
+    // least diagnostic signal available: a thief lifting a phone carefully off
+    // a table produces a weak onset, so weighting it heavily would penalise
+    // precisely the case this app exists to catch. What actually distinguishes
+    // a pickup is the combination of prior stillness, real reorientation, and
+    // the device continuing to be held afterwards.
+    val weightPriorStillness: Float = 0.20f,
+    val weightOnsetImpulse: Float = 0.10f,
+    val weightOrientation: Float = 0.30f,
+    val weightAngularTravel: Float = 0.15f,
+    val weightSustainedMotion: Float = 0.25f,
 
     // -- policy -------------------------------------------------------------
     /** Screen-off grace before an unlocked device is locked, trusted context. */
@@ -197,7 +210,7 @@ data class MotionConfig(
         val SENSITIVE = MotionConfig(
             requiredStillnessMillis = 1_500,
             minOrientationDeltaDeg = 8f,
-            minAngularTravelRad = 0.3f,
+            minAngularTravelRad = 0.15f,
             pickupConfidenceThreshold = 0.5f,
             disturbancePeakMin = 0.8f,
         )
@@ -206,7 +219,7 @@ data class MotionConfig(
         val CONSERVATIVE = MotionConfig(
             requiredStillnessMillis = 5_000,
             minOrientationDeltaDeg = 18f,
-            minAngularTravelRad = 0.8f,
+            minAngularTravelRad = 0.4f,
             pickupConfidenceThreshold = 0.75f,
             disturbancePeakMin = 1.6f,
         )
