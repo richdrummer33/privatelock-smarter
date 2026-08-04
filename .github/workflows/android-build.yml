@@ -105,9 +105,9 @@ jobs:
         run: |
           ./gradlew \
             :motion-core:test \
-            :app:testDebugUnitTest \
-            :app:lintDebug \
-            :app:assembleDebug \
+            :app:testFossDebugUnitTest \
+            :app:lintFossDebug \
+            :app:assembleFossDebug \
             --stacktrace \
             --warning-mode all
 
@@ -115,7 +115,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: privatelock-smarter-debug-${{ github.sha }}
-          path: app/build/outputs/apk/debug/*.apk
+          path: app/build/outputs/apk/foss/debug/*.apk
           if-no-files-found: error
           retention-days: 30
 
@@ -173,6 +173,6 @@ jobs:
           heap-size: 2048M
           script: |
             ./gradlew \
-              :app:connectedDebugAndroidTest \
+              :app:connectedFossDebugAndroidTest \
               --stacktrace \
               --warning-mode all
